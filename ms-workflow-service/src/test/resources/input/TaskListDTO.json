@@ -1,0 +1,120 @@
+{
+  "success": true,
+  "code": "200",
+  "message": "OK",
+  "data": {
+    "taskList": [
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Task Completed",
+        "currentStageCode": "TASK_COMPLETED",
+        "dateUpdated": "2023-04-17 17:10:23",
+        "taskId": "459b90a4-947a-46c7-9ff9-106fcfebdee8",
+        "taskReferenceNo": "TF00000117",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Task Rejected",
+        "currentStageCode": "TASK_REJECTED",
+        "dateUpdated": "2023-04-19 15:38:54",
+        "taskId": "ff1c87a5-4e10-4350-8bac-b89f2b36447b",
+        "taskReferenceNo": "TF00000118",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Process Exception",
+        "currentStageCode": "PROCESS_EXCEPTION",
+        "dateUpdated": "2023-04-17 17:13:30",
+        "taskId": "2100e9cd-f777-4e0f-99df-64379cdde2ce",
+        "taskReferenceNo": "TF00000119",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Task Completed",
+        "currentStageCode": "TASK_COMPLETED",
+        "dateUpdated": "2023-04-18 17:36:55",
+        "taskId": "1682d5ad-41e7-4acf-b644-305d9c625b81",
+        "taskReferenceNo": "TF00000120",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Task Creation",
+        "currentStageCode": "TASK_CREATION",
+        "dateUpdated": "2023-04-20 10:55:49",
+        "taskId": "f43cd6b6-bf71-4cf6-8f0d-f9f305fb3507",
+        "taskReferenceNo": "TF00000121",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Process Exception",
+        "currentStageCode": "PROCESS_EXCEPTION",
+        "dateUpdated": "2023-04-20 10:57:47",
+        "taskId": "5c85c8eb-b96e-4e40-9e51-816765d89713",
+        "taskReferenceNo": "TF00000122",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Pending Approval",
+        "currentStageCode": "PENDING_APPROVAL",
+        "dateUpdated": "2023-04-17 17:08:28",
+        "taskId": "1821be6c-a4fc-4025-a1f5-b3f99c908cde",
+        "taskReferenceNo": "TF00000123",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Pending Approval",
+        "currentStageCode": "PENDING_APPROVAL",
+        "dateUpdated": "2023-04-17 17:08:28",
+        "taskId": "f75a820a-e207-4b75-8a3b-ce31c3459e99",
+        "taskReferenceNo": "TF00000124",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Pending Approval",
+        "currentStageCode": "PENDING_APPROVAL",
+        "dateUpdated": "2023-04-17 17:08:28",
+        "taskId": "a497d8cf-d9bb-40bb-aea0-14dd8f3eab3c",
+        "taskReferenceNo": "TF00000125",
+        "taskName": "Create Technical Profile - Kong"
+      },
+      {
+        "taskTypeName": "Technical Profile XDD",
+        "taskTypeCode": "TECH_PROFILE",
+        "createdBy": "NICK",
+        "stageName": "Pending Approval",
+        "currentStageCode": "PENDING_APPROVAL",
+        "dateUpdated": "2023-04-17 17:08:28",
+        "taskId": "3b1df8fc-57fa-49fc-b0a8-bb6533eb6435",
+        "taskReferenceNo": "TF00000126",
+        "taskName": "Create Technical Profile - Kong"
+      }
+    ],
+    "countOfPages": 4
+  }
+}

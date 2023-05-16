@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/lib-common.v2.7.3/common.iml" filepath="$PROJECT_DIR$/lib-common.v2.7.3/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms-workflow-model/ms-workflow-model.iml" filepath="$PROJECT_DIR$/ms-workflow-model/ms-workflow-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms-workflow-sdk/ms-workflow-sdk.iml" filepath="$PROJECT_DIR$/ms-workflow-sdk/ms-workflow-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms-workflow-service/ms-workflow-service.iml" filepath="$PROJECT_DIR$/ms-workflow-service/ms-workflow-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms-bff-workflow-service/msworkflowservice.iml" filepath="$PROJECT_DIR$/ms-bff-workflow-service/msworkflowservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/source-code.iml" filepath="$PROJECT_DIR$/.idea/source-code.iml" />
+    </modules>
+  </component>
+</project>

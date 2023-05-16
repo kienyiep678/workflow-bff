@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ms-workflow-service" />
+        <module name="msworkflowservice" />
+        <module name="ms-workflow-sdk" />
+        <module name="ms-workflow-model" />
+        <module name="common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="common" target="17" />
+      <module name="lib-common" target="17" />
+      <module name="ms-workflow-model" target="17" />
+      <module name="ms-workflow-sdk" target="17" />
+      <module name="ms-workflow-service" target="17" />
+      <module name="msworkflowservice" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common" options="-parameters" />
+      <module name="lib-common" options="-parameters" />
+      <module name="ms-workflow-model" options="-parameters" />
+      <module name="ms-workflow-sdk" options="-parameters" />
+      <module name="msworkflowservice" options="-parameters" />
+    </option>
+  </component>
+</project>

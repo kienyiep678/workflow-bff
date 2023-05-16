@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.vladmihalcea:hibernate-types-52:2.9.11">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/vladmihalcea/hibernate-types-52/2.9.11/hibernate-types-52-2.9.11.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/vladmihalcea/hibernate-types-52/2.9.11/hibernate-types-52-2.9.11-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/vladmihalcea/hibernate-types-52/2.9.11/hibernate-types-52-2.9.11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

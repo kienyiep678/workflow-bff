@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0zrtked" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.8.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="MAKER_CHECKER_FLOW" name="Maker Checker Flow" isExecutable="true">
+    <bpmn:startEvent id="TASK_STARTED" name="Task Started">
+      <bpmn:outgoing>TASK_STARTED_FLOW</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="TASK_STARTED_FLOW" sourceRef="TASK_STARTED" targetRef="TASK_CREATION" />
+    <bpmn:exclusiveGateway id="TASK_CREATION_GATEWAY">
+      <bpmn:incoming>TASK_CREATION_FLOW</bpmn:incoming>
+      <bpmn:outgoing>TASK_CREATION_GATEWAY_SUBMIT_FLOW</bpmn:outgoing>
+      <bpmn:outgoing>TASK_CREATION_GATEWAY_CANCEL_FLOW</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="TASK_CREATION_FLOW" sourceRef="TASK_CREATION" targetRef="TASK_CREATION_GATEWAY" />
+    <bpmn:sequenceFlow id="TASK_CREATION_GATEWAY_SUBMIT_FLOW" name="Submit for Approval" sourceRef="TASK_CREATION_GATEWAY" targetRef="PENDING_APPROVAL">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'SUBMIT'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="PENDING_APPROVAL_GATEWAY">
+      <bpmn:incoming>PENDING_APPROVAL_FLOW</bpmn:incoming>
+      <bpmn:outgoing>PENDING_APPROVAL_GATEWAY_REJECT_FLOW</bpmn:outgoing>
+      <bpmn:outgoing>PENDING_APPROVAL_GATEWAY_APPROVE_FLOW</bpmn:outgoing>
+      <bpmn:outgoing>PENDING_APPROVAL_GATEWAY_RETURN_FLOW</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="PENDING_APPROVAL_FLOW" sourceRef="PENDING_APPROVAL" targetRef="PENDING_APPROVAL_GATEWAY" />
+    <bpmn:sequenceFlow id="PENDING_APPROVAL_GATEWAY_REJECT_FLOW" name="Reject" sourceRef="PENDING_APPROVAL_GATEWAY" targetRef="PENDING_PROCESS_EXECUTION">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'REJECT'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="PENDING_APPROVAL_GATEWAY_APPROVE_FLOW" name="Approve" sourceRef="PENDING_APPROVAL_GATEWAY" targetRef="APPROVAL_MATRIX">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'APPROVE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:boundaryEvent id="Event_0iru6os" attachedToRef="PENDING_PROCESS_EXECUTION">
+      <bpmn:outgoing>PENDING_PROCESS_EXECUTION_ERROR_FLOW</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0lgayj3" errorRef="Error_0w2mqhv" camunda:errorMessageVariable="EXECUTION_EXCEPTION_ERROR_MSG" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="PENDING_PROCESS_EXECUTION_ERROR_FLOW" sourceRef="Event_0iru6os" targetRef="PROCESS_EXCEPTION" />
+    <bpmn:exclusiveGateway id="PROCESS_EXCEPTION_GATEWAY">
+      <bpmn:incoming>PROCESS_EXCEPTION_FLOW</bpmn:incoming>
+      <bpmn:outgoing>PROCESS_EXCEPTION_GATEWAY_RETURN_FLOW</bpmn:outgoing>
+      <bpmn:outgoing>PROCESS_EXCEPTION_GATEWAY_EXECUTE_FLOW</bpmn:outgoing>
+      <bpmn:outgoing>PROCESS_EXCEPTION_GATEWAY_CANCEL_FLOW</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="PROCESS_EXCEPTION_FLOW" sourceRef="PROCESS_EXCEPTION" targetRef="PROCESS_EXCEPTION_GATEWAY" />
+    <bpmn:sequenceFlow id="PROCESS_EXCEPTION_GATEWAY_RETURN_FLOW" name="Return to task creation stage" sourceRef="PROCESS_EXCEPTION_GATEWAY" targetRef="TASK_CREATION">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'RETURN_FROM_EXCEPTION'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="TASK_COMPLETED" name="Task Completed">
+      <bpmn:extensionElements />
+      <bpmn:incoming>PENDING_PROCESS_EXECUTION_APPROVE_FLOW</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="PROCESS_EXCEPTION_GATEWAY_EXECUTE_FLOW" name="Execute" sourceRef="PROCESS_EXCEPTION_GATEWAY" targetRef="PENDING_PROCESS_EXECUTION">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'EXECUTE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="TASK_CREATION_GATEWAY_CANCEL_FLOW" name="Cancel" sourceRef="TASK_CREATION_GATEWAY" targetRef="TASK_CANCELLED">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'CANCEL'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="TASK_CREATION" name="Task Creation" camunda:formRef="TASK_CREATION_FORM" camunda:formRefBinding="latest">
+      <bpmn:incoming>TASK_STARTED_FLOW</bpmn:incoming>
+      <bpmn:incoming>PROCESS_EXCEPTION_GATEWAY_RETURN_FLOW</bpmn:incoming>
+      <bpmn:incoming>PENDING_APPROVAL_GATEWAY_RETURN_FLOW</bpmn:incoming>
+      <bpmn:outgoing>TASK_CREATION_FLOW</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="PENDING_APPROVAL" name="Pending Approval" camunda:formRef="PENDING_APPROVAL_FORM" camunda:formRefBinding="latest">
+      <bpmn:extensionElements />
+      <bpmn:incoming>TASK_CREATION_GATEWAY_SUBMIT_FLOW</bpmn:incoming>
+      <bpmn:incoming>APPROVAL_MATRIX_GATEWAY_FALSE_FLOW</bpmn:incoming>
+      <bpmn:outgoing>PENDING_APPROVAL_FLOW</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="PENDING_PROCESS_EXECUTION" name="Pending Process Execution" camunda:delegateExpression="#{executionServiceTask}">
+      <bpmn:incoming>PROCESS_EXCEPTION_GATEWAY_EXECUTE_FLOW</bpmn:incoming>
+      <bpmn:incoming>PENDING_APPROVAL_GATEWAY_REJECT_FLOW</bpmn:incoming>
+      <bpmn:incoming>APPROVAL_MATRIX_GATEWAY_TRUE_FLOW</bpmn:incoming>
+      <bpmn:outgoing>PENDING_PROCESS_EXECUTION_FLOW</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="PROCESS_EXCEPTION" name="Process Exception" camunda:formRef="HOST_EXCEPTION_FORM" camunda:formRefBinding="latest">
+      <bpmn:incoming>PENDING_PROCESS_EXECUTION_ERROR_FLOW</bpmn:incoming>
+      <bpmn:outgoing>PROCESS_EXCEPTION_FLOW</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="TASK_CANCELLED" name="Task Cancelled">
+      <bpmn:incoming>TASK_CREATION_GATEWAY_CANCEL_FLOW</bpmn:incoming>
+      <bpmn:incoming>PROCESS_EXCEPTION_GATEWAY_CANCEL_FLOW</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="TASK_REJECTED" name="Task Rejected">
+      <bpmn:incoming>PENDING_PROCESS_EXECUTION_REJECT_FLOW</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="PENDING_APPROVAL_GATEWAY_RETURN_FLOW" name="Return to task creation stage" sourceRef="PENDING_APPROVAL_GATEWAY" targetRef="TASK_CREATION">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'RETURN_FROM_APPROVAL'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="PROCESS_EXCEPTION_GATEWAY_CANCEL_FLOW" name="Cancel" sourceRef="PROCESS_EXCEPTION_GATEWAY" targetRef="TASK_CANCELLED">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ACTION== 'CANCEL_FROM_EXCEPTION'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="APPROVAL_MATRIX_GATEWAY">
+      <bpmn:incoming>APPROVAL_MATRIX_FLOW</bpmn:incoming>
+      <bpmn:outgoing>APPROVAL_MATRIX_GATEWAY_FALSE_FLOW</bpmn:outgoing>
+      <bpmn:outgoing>APPROVAL_MATRIX_GATEWAY_TRUE_FLOW</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="APPROVAL_MATRIX_FLOW" sourceRef="APPROVAL_MATRIX" targetRef="APPROVAL_MATRIX_GATEWAY" />
+    <bpmn:exclusiveGateway id="PENDING_PROCESS_EXECUTION_GATEWAY">
+      <bpmn:incoming>PENDING_PROCESS_EXECUTION_FLOW</bpmn:incoming>
+      <bpmn:outgoing>PENDING_PROCESS_EXECUTION_REJECT_FLOW</bpmn:outgoing>
+      <bpmn:outgoing>PENDING_PROCESS_EXECUTION_APPROVE_FLOW</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="PENDING_PROCESS_EXECUTION_FLOW" sourceRef="PENDING_PROCESS_EXECUTION" targetRef="PENDING_PROCESS_EXECUTION_GATEWAY" />
+    <bpmn:sequenceFlow id="APPROVAL_MATRIX_GATEWAY_FALSE_FLOW" name="Matrix Result = false" sourceRef="APPROVAL_MATRIX_GATEWAY" targetRef="PENDING_APPROVAL">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{!APPROVAL_MATRIX_RESULT}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="APPROVAL_MATRIX_GATEWAY_TRUE_FLOW" name="Matrix Result = True" sourceRef="APPROVAL_MATRIX_GATEWAY" targetRef="PENDING_PROCESS_EXECUTION">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{APPROVAL_MATRIX_RESULT}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="PENDING_PROCESS_EXECUTION_REJECT_FLOW" name="TASK_DECISION = Reject" sourceRef="PENDING_PROCESS_EXECUTION_GATEWAY" targetRef="TASK_REJECTED">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{TASK_DECISION== 'REJECT'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="PENDING_PROCESS_EXECUTION_APPROVE_FLOW" name="TASK_DECISION = Approve" sourceRef="PENDING_PROCESS_EXECUTION_GATEWAY" targetRef="TASK_COMPLETED">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{TASK_DECISION== 'APPROVE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="APPROVAL_MATRIX" name="Approval Matrix" camunda:delegateExpression="#{approvalServiceTask}">
+      <bpmn:incoming>PENDING_APPROVAL_GATEWAY_APPROVE_FLOW</bpmn:incoming>
+      <bpmn:outgoing>APPROVAL_MATRIX_FLOW</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:error id="Error_0w2mqhv" name="EXECUTION_EXCEPTION_ERROR" errorCode="EXECUTION_EXCEPTION_ERROR" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="MAKER_CHECKER_FLOW">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="TASK_STARTED">
+        <dc:Bounds x="182" y="542" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="170" y="585" width="61" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0rbz4le_di" bpmnElement="TASK_CREATION_GATEWAY" isMarkerVisible="true">
+        <dc:Bounds x="555" y="535" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="581" y="442" width="7" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0cmzofw_di" bpmnElement="PENDING_APPROVAL_GATEWAY" isMarkerVisible="true">
+        <dc:Bounds x="945" y="535" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_10zmlwj_di" bpmnElement="PROCESS_EXCEPTION_GATEWAY" isMarkerVisible="true">
+        <dc:Bounds x="1835" y="765" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1c6bkru_di" bpmnElement="TASK_COMPLETED">
+        <dc:Bounds x="1832" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1811" y="173" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kwl6xr_di" bpmnElement="TASK_CREATION">
+        <dc:Bounds x="360" y="520" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ant4ej_di" bpmnElement="PENDING_APPROVAL">
+        <dc:Bounds x="710" y="520" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bxun11_di" bpmnElement="PENDING_PROCESS_EXECUTION">
+        <dc:Bounds x="1540" y="520" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1d0yem0_di" bpmnElement="PROCESS_EXCEPTION">
+        <dc:Bounds x="1540" y="750" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1pzfyi3_di" bpmnElement="TASK_CANCELLED">
+        <dc:Bounds x="562" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="545" y="82" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dsu7g8_di" bpmnElement="TASK_REJECTED">
+        <dc:Bounds x="1572" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1555" y="173" width="69" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_19u6jmw_di" bpmnElement="APPROVAL_MATRIX_GATEWAY" isMarkerVisible="true">
+        <dc:Bounds x="1355" y="535" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_106icj0_di" bpmnElement="PENDING_PROCESS_EXECUTION_GATEWAY" isMarkerVisible="true">
+        <dc:Bounds x="1695" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pe187g_di" bpmnElement="APPROVAL_MATRIX">
+        <dc:Bounds x="1130" y="520" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1fh7h69_di" bpmnElement="Event_0iru6os">
+        <dc:Bounds x="1572" y="582" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_07yfh17_di" bpmnElement="TASK_STARTED_FLOW">
+        <di:waypoint x="218" y="560" />
+        <di:waypoint x="360" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="247" y="392" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zjwya7_di" bpmnElement="TASK_CREATION_FLOW">
+        <di:waypoint x="460" y="560" />
+        <di:waypoint x="555" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="469" y="392" width="78" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nkxhg0_di" bpmnElement="TASK_CREATION_GATEWAY_SUBMIT_FLOW">
+        <di:waypoint x="605" y="560" />
+        <di:waypoint x="710" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="624" y="516" width="52" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ro5wg0_di" bpmnElement="PENDING_APPROVAL_FLOW">
+        <di:waypoint x="810" y="560" />
+        <di:waypoint x="945" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1258" y="452" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dj8zk2_di" bpmnElement="PENDING_APPROVAL_GATEWAY_REJECT_FLOW">
+        <di:waypoint x="970" y="535" />
+        <di:waypoint x="970" y="430" />
+        <di:waypoint x="1590" y="430" />
+        <di:waypoint x="1590" y="520" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1242" y="403" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ccwhmv_di" bpmnElement="PENDING_APPROVAL_GATEWAY_APPROVE_FLOW">
+        <di:waypoint x="995" y="560" />
+        <di:waypoint x="1130" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1040" y="533" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ewd790_di" bpmnElement="PENDING_PROCESS_EXECUTION_ERROR_FLOW">
+        <di:waypoint x="1590" y="618" />
+        <di:waypoint x="1590" y="750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0r9wxg8_di" bpmnElement="PROCESS_EXCEPTION_FLOW">
+        <di:waypoint x="1640" y="790" />
+        <di:waypoint x="1835" y="790" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0m0kucy_di" bpmnElement="PROCESS_EXCEPTION_GATEWAY_RETURN_FLOW">
+        <di:waypoint x="1860" y="815" />
+        <di:waypoint x="1860" y="950" />
+        <di:waypoint x="410" y="950" />
+        <di:waypoint x="410" y="600" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1107" y="916" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rvn8v5_di" bpmnElement="PROCESS_EXCEPTION_GATEWAY_EXECUTE_FLOW">
+        <di:waypoint x="1860" y="765" />
+        <di:waypoint x="1860" y="430" />
+        <di:waypoint x="1590" y="430" />
+        <di:waypoint x="1590" y="520" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1870" y="633" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vzp7in_di" bpmnElement="TASK_CREATION_GATEWAY_CANCEL_FLOW">
+        <di:waypoint x="580" y="535" />
+        <di:waypoint x="580" y="148" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="592" y="333" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07ds7po_di" bpmnElement="PENDING_APPROVAL_GATEWAY_RETURN_FLOW">
+        <di:waypoint x="970" y="585" />
+        <di:waypoint x="970" y="750" />
+        <di:waypoint x="410" y="750" />
+        <di:waypoint x="410" y="600" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="655" y="716" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1n4ysym_di" bpmnElement="PROCESS_EXCEPTION_GATEWAY_CANCEL_FLOW">
+        <di:waypoint x="1885" y="790" />
+        <di:waypoint x="1980" y="790" />
+        <di:waypoint x="1980" y="130" />
+        <di:waypoint x="598" y="130" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1241" y="113" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vi9plo_di" bpmnElement="APPROVAL_MATRIX_FLOW">
+        <di:waypoint x="1230" y="560" />
+        <di:waypoint x="1355" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17wjw7x_di" bpmnElement="PENDING_PROCESS_EXECUTION_FLOW">
+        <di:waypoint x="1640" y="560" />
+        <di:waypoint x="1720" y="560" />
+        <di:waypoint x="1720" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qd7r1h_di" bpmnElement="APPROVAL_MATRIX_GATEWAY_FALSE_FLOW">
+        <di:waypoint x="1380" y="585" />
+        <di:waypoint x="1380" y="660" />
+        <di:waypoint x="760" y="660" />
+        <di:waypoint x="760" y="600" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1033" y="626" width="75" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ma0w3q_di" bpmnElement="APPROVAL_MATRIX_GATEWAY_TRUE_FLOW">
+        <di:waypoint x="1405" y="560" />
+        <di:waypoint x="1540" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1435" y="526" width="75" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y19cm2_di" bpmnElement="PENDING_PROCESS_EXECUTION_REJECT_FLOW">
+        <di:waypoint x="1695" y="330" />
+        <di:waypoint x="1590" y="330" />
+        <di:waypoint x="1590" y="228" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1497" y="276" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t58731_di" bpmnElement="PENDING_PROCESS_EXECUTION_APPROVE_FLOW">
+        <di:waypoint x="1745" y="330" />
+        <di:waypoint x="1850" y="330" />
+        <di:waypoint x="1850" y="228" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1857" y="276" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

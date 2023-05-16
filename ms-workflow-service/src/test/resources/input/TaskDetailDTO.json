@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "code": "200",
+  "message": "Complete detail is sent",
+  "data": {
+    "description": "Create Technical Profile Description",
+    "taskUrlJsonObject": [
+      {
+        "url": "http://localhost:8083/task/testget",
+        "urlType": "APPROVE_URL",
+        "method": "GET",
+        "data": null
+      },
+      {
+        "url": "http://localhost:8083/task/testpost",
+        "urlType": "REJECT_URL",
+        "method": "POST",
+        "data": {
+          "password": "hahahaha",
+          "username": "testuser"
+        }
+      }
+    ],
+    "stageName": "Task Rejected",
+    "currentStageCode": "TASK_REJECTED",
+    "taskTypeName": "Technical Profile XDD",
+    "taskTypeCode": "TECH_PROFILE",
+    "currentHolderUserId": "SELINA",
+    "actionBy": "SELINA",
+    "actionType": 2,
+    "dateAction": "2023-04-19 20:38:02",
+    "updatedBy": "SELINA",
+    "dateUpdated": "2023-04-19 20:38:02",
+    "createdBy": "SELINA",
+    "dateCreated": "2023-04-19 20:37:17",
+    "remarkMessage": null,
+    "endStage": true,
+    "taskId": "1029e207-e1a7-4b73-95aa-a1765020d4e4",
+    "taskReferenceNo": "TF00000182",
+    "taskName": "Create Technical Profile - Kong"
+  }
+}

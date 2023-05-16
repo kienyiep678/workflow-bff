@@ -1,0 +1,27 @@
+{
+  "components": [
+    {
+      "label": "Task Name",
+      "type": "textfield",
+      "id": "Field_10boieg",
+      "key": "TASK_NAME",
+      "disabled": false
+    },
+    {
+      "label": "Task Description",
+      "type": "textfield",
+      "id": "Field_1kiqrxt",
+      "key": "TASK_DESC",
+      "disabled": false
+    }
+  ],
+  "type": "default",
+  "id": "PENDING_APPROVAL_FORM",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.8.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 7
+}

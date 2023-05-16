@@ -1,0 +1,50 @@
+{
+  "components": [
+    {
+      "label": "Task Name",
+      "type": "textfield",
+      "id": "Field_10boieg",
+      "key": "TASK_NAME",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Task Description",
+      "type": "textfield",
+      "id": "Field_1kiqrxt",
+      "key": "TASK_DESC",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "Proceed",
+          "value": "PROCEED"
+        },
+        {
+          "label": "Cancel",
+          "value": "CANCEL"
+        }
+      ],
+      "label": "Action",
+      "type": "select",
+      "id": "Field_1nxie2c",
+      "key": "TASK_ACTION",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "TASK_CREATED_FORM",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.8.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 7
+}

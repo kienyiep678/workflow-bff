@@ -1,0 +1,35 @@
+.card-styling {
+  border: 1px solid white;
+}
+
+.header-styling {
+  /* color: white;  */
+  background-color: black;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.header-styling h3 {
+  color: white;
+  margin-bottom: 0;
+}
+
+.body-styling,
+.footer-styling {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.footer-styling {
+  background-color: #DCDCDC;
+}
+
+.form-control-alternative,
+.form-control-label {
+  font-size: 80%;
+  margin: 0 auto;
+}
+
+.input-handling {
+  border: 1px solid crimson ;
+}
